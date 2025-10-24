@@ -10,6 +10,10 @@ PROGECT_NAME = 'my_project'
 DATASET_YAML_PATH = ROOT_DIR / 'resource' / "datasets"/'data.yaml'
 INITIAL_MODEL_WEIGHT = ROOT_DIR/"resource"/"yolo11n.pt"
 TRAIN_RUN_NAME,VALIDATION_RUN_NAME = f'{PROGECT_NAME}_train',f'{PROGECT_NAME}_val'
+PLAY_INTERVAL_MS =10
+#上传信息定义
+MODEL_STORE_PATH=ROOT_DIR/"resource"
+INPUT_FILE_PATH = ROOT_DIR /"resource"/"input"
 # 训练超参数
 EPOCHS = 1
 IMG_SIZE = 640
