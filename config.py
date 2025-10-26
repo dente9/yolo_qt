@@ -11,6 +11,10 @@ DATASET_YAML_PATH = ROOT_DIR / 'resource' / "datasets"/'data.yaml'
 INITIAL_MODEL_WEIGHT = ROOT_DIR/"resource"/"yolo11n.pt"
 TRAIN_RUN_NAME,VALIDATION_RUN_NAME = f'{PROGECT_NAME}_train',f'{PROGECT_NAME}_val'
 PLAY_INTERVAL_MS =10
+TITLE = 'YoloV8 system'
+WINDOWS_SIZE = (800, 600)
+SHOULD_HIDE_TITLE_BAR = True
+FIX_SIZE = False
 #上传信息定义
 MODEL_STORE_PATH=ROOT_DIR/"resource"
 INPUT_FILE_PATH = ROOT_DIR /"resource"/"input"

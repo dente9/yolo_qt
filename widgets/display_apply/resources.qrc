@@ -1,0 +1,12 @@
+<RCC>
+  <qresource prefix="images">
+    <file>resource/images/model_select.png</file>
+    <file>resource/images/bg.png</file>
+    <file>resource/images/camera.png</file>
+    <file>resource/images/clear.png</file>
+    <file>resource/images/dir.png</file>
+    <file>resource/images/exit.png</file>
+    <file>resource/images/file.png</file>
+    <file>resource/images/save.png</file>
+  </qresource>
+</RCC>

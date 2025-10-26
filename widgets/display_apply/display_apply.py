@@ -2,39 +2,59 @@ import sys
 import csv
 from pathlib import Path
 from PySide6.QtWidgets import QApplication, QWidget, QSizePolicy, QTableWidgetItem, QFileDialog, QMessageBox, QHeaderView
-from PySide6.QtGui import QFont,QMouseEvent
-from PySide6.QtCore import QTimer, Qt,QPoint
+from PySide6.QtGui import QFont
+from PySide6.QtCore import QTimer, Qt
 from functions.yolo_api import YoloAPI, Box, FrameResult
 from functions.media_handler import MediaHandler
 from functions.camera_yolo_api import CameraYoloAPI
 from functions.draw_yolo import draw_boxes
 from functions.file_cp_selector import open_selector
-from Ui_display import Ui_Form
+from Ui_display import Ui_mainlayout
 import cv2
 import numpy as np
 from typing import Optional
 from functions.title_bar_dragger import TitleBarDragger
+import resources_rc
+from PySide6.QtWidgets import QMainWindow
+
 
 project_root = Path(__file__).resolve().parents[2]
 sys.path.append(str(project_root))
+from config import (MODEL_STORE_PATH, INPUT_FILE_PATH,PLAY_INTERVAL_MS,
+                    WINDOWS_SIZE,SHOULD_HIDE_TITLE_BAR,FIX_SIZE,TITLE)
 
-from config import MODEL_STORE_PATH, INPUT_FILE_PATH,PLAY_INTERVAL_MS
+class BgMainWindow(QMainWindow):
+    def __init__(self, central_widget, parent=None):
+        super().__init__(parent)
+        self.resize(*WINDOWS_SIZE)
+        self.setWindowTitle(TITLE)
+        central_widget.ui.btn_exit.clicked.connect(self.close)
+
+        # 背景图
+        self.setStyleSheet("""
+    QMainWindow {
+        border-image: url(:/images/resource/images/bg.png) 0 0 0 0 stretch stretch;
+    }
+""")
+
+        # 把原来的 DisplayApp 挂进来
+        self.setCentralWidget(central_widget)
+        if SHOULD_HIDE_TITLE_BAR:
+            self.setWindowFlag(Qt.FramelessWindowHint)
+            self._title_bar_dragger = TitleBarDragger(self, central_widget.ui.lb_title)
+        if FIX_SIZE:
+            self.setFixedSize(*WINDOWS_SIZE)
 
 class DisplayApp(QWidget):
-    SHOULD_HIDE_TITLE_BAR: bool = True
     def __init__(self):
         super().__init__()
-        self.ui = Ui_Form()
+        self.ui = Ui_mainlayout()
         self.ui.setupUi(self)
-        self.ui.display.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        if self.SHOULD_HIDE_TITLE_BAR:
-            self.setWindowFlag(Qt.FramelessWindowHint)
-            self._title_bar_dragger = TitleBarDragger(self, self.ui.lb_title)
-            #self._title_bar_dragger.enable_drag()
-
+        self.resize(*WINDOWS_SIZE)
         self.media_manager = MediaHandler(self.ui.display)
         self.playback_timer = QTimer(self)
         self.playback_timer.timeout.connect(self._process_and_display_frame)
+
 
         self.yolo: Optional[YoloAPI] = None
         YoloAPI.set_global_logging(True)
@@ -44,19 +64,31 @@ class DisplayApp(QWidget):
         self.current_media_path: str = "N/A"
         self.all_detection_results: list[list] = []
         self.last_yolo_result: Optional[FrameResult] = None
-        self._setup_table_widget()
+
 
         model_store_dir = Path(MODEL_STORE_PATH)
         default_model_path = model_store_dir / "best.pt"
         self.ui.le_model_path.setText(str(default_model_path))
         self.load_model(default_model_path)
 
-        # ✅ 新增：幻灯片（图片文件夹）播放间隔，单位毫秒。在此处设置您想要的值。
         self.slideshow_interval_ms: int = PLAY_INTERVAL_MS
 
         self.bind()
+        self.init_work()
 
         self.ui.lb_cameracheck.setText("摄像头: <font color='gray'>已关闭</font>")
+
+    def init_work(self):
+        self.ui.lb_title.setText(TITLE)
+        compact_font = QFont()
+        compact_font.setPointSize(9)
+        self.ui.tableWidget.setFont(compact_font)
+        self.ui.tableWidget.verticalHeader().setDefaultSectionSize(22)
+        self.ui.tableWidget.verticalHeader().setVisible(False)
+        self.ui.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+        self.ui.tableWidget.horizontalHeader().setSectionResizeMode(4, QHeaderView.Stretch)
+        self.ui.tableWidget.horizontalHeader().setMinimumSectionSize(100)
+
 
 
 
@@ -203,18 +235,6 @@ class DisplayApp(QWidget):
             self.yolo = None
             QMessageBox.critical(self, "加载失败", f"模型加载失败:\n{model_path.name}\n请检查路径或模型文件是否损坏。")
 
-    def _setup_table_widget(self):
-        headers = ["序号", "文件路径", "类别", "置信度", "坐标位置"]
-        self.ui.tableWidget.setColumnCount(len(headers))
-        self.ui.tableWidget.setHorizontalHeaderLabels(headers)
-        compact_font = QFont()
-        compact_font.setPointSize(9)
-        self.ui.tableWidget.setFont(compact_font)
-        self.ui.tableWidget.verticalHeader().setDefaultSectionSize(22)
-        self.ui.tableWidget.verticalHeader().setVisible(False)
-        self.ui.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-        self.ui.tableWidget.horizontalHeader().setSectionResizeMode(4, QHeaderView.Stretch)
-        self.ui.tableWidget.horizontalHeader().setMinimumSectionSize(100)
 
     def _reset_session_with_confirmation(self):
         if not self.all_detection_results:
@@ -416,5 +436,6 @@ class DisplayApp(QWidget):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = DisplayApp()
+    window=BgMainWindow(window)
     window.show()
     sys.exit(app.exec())

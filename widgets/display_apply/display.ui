@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>mainlayout</class>
+ <widget class="QWidget" name="mainlayout">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>1000</width>
-    <height>639</height>
+    <height>644</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -24,6 +24,11 @@
   </property>
   <property name="windowTitle">
    <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget#mainwigget {
+    border-image: url(:/images/resource/images/bg.png);
+}</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_6">
    <item>
@@ -148,6 +153,10 @@
             <property name="text">
              <string>模型选择</string>
             </property>
+            <property name="icon">
+             <iconset resource="resources.qrc">
+              <normaloff>:/images/resource/images/model_select.png</normaloff>:/images/resource/images/model_select.png</iconset>
+            </property>
            </widget>
           </item>
           <item row="0" column="1">
@@ -170,6 +179,10 @@
             </property>
             <property name="text">
              <string>启用/关闭摄像头</string>
+            </property>
+            <property name="icon">
+             <iconset resource="resources.qrc">
+              <normaloff>:/images/resource/images/camera.png</normaloff>:/images/resource/images/camera.png</iconset>
             </property>
            </widget>
           </item>
@@ -200,6 +213,10 @@
             <property name="text">
              <string>打开文件</string>
             </property>
+            <property name="icon">
+             <iconset resource="resources.qrc">
+              <normaloff>:/images/resource/images/file.png</normaloff>:/images/resource/images/file.png</iconset>
+            </property>
            </widget>
           </item>
           <item row="4" column="0">
@@ -212,6 +229,10 @@
             </property>
             <property name="text">
              <string>打开文件夹</string>
+            </property>
+            <property name="icon">
+             <iconset resource="resources.qrc">
+              <normaloff>:/images/resource/images/dir.png</normaloff>:/images/resource/images/dir.png</iconset>
             </property>
            </widget>
           </item>
@@ -397,6 +418,10 @@
               <property name="text">
                <string>清除</string>
               </property>
+              <property name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/images/resource/images/clear.png</normaloff>:/images/resource/images/clear.png</iconset>
+              </property>
              </widget>
             </item>
             <item>
@@ -404,12 +429,20 @@
               <property name="text">
                <string>保存历史记录</string>
               </property>
+              <property name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/images/resource/images/save.png</normaloff>:/images/resource/images/save.png</iconset>
+              </property>
              </widget>
             </item>
             <item>
              <widget class="QPushButton" name="btn_exit">
               <property name="text">
                <string>退出</string>
+              </property>
+              <property name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/images/resource/images/exit.png</normaloff>:/images/resource/images/exit.png</iconset>
               </property>
              </widget>
             </item>
@@ -424,6 +457,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
