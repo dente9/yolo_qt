@@ -1,0 +1,29 @@
+[project]
+name = "yolo-qt"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "dill>=0.4.0",
+    "gitpython>=3.1.24",
+    "hydra-core>=1.2.0",
+    "ipython>=8.37.0",
+    "matplotlib>=3.2.2",
+    "numpy>=1.18.5",
+    "opencv-python>=4.1.1",
+    "pandas>=1.1.4",
+    "pillow>=7.1.2",
+    "psutil>=7.1.1",
+    "pyside6>=6.10.0",
+    "pyyaml>=5.3.1",
+    "requests>=2.23.0",
+    "scipy>=1.4.1",
+    "seaborn>=0.11.0",
+    "tensorboard>=2.4.1",
+    "thop>=0.1.1",
+    "torch>=1.7.0",
+    "torchvision>=0.8.1",
+    "tqdm>=4.64.0",
+    "ultralytics>=8.3.219",
+]

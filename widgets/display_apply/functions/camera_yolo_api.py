@@ -1,5 +1,4 @@
 import cv2
-from typing import Optional
 from functions.yolo_api import YoloAPI, FrameResult
 
 class CameraYoloAPI:
@@ -19,7 +18,7 @@ class CameraYoloAPI:
             raise TypeError("yolo_api 必须是一个 YoloAPI 的实例。")
         self.yolo = yolo_api
         self._source = source
-        self.cap: Optional[cv2.VideoCapture] = None
+        self.cap = None
         print(f"CameraYoloAPI 实例已创建，源: {self._source}，等待启动摄像头。")
 
     def start(self) -> bool:
@@ -58,7 +57,7 @@ class CameraYoloAPI:
         """
         return self.cap is not None and self.cap.isOpened()
 
-    def process_next_frame(self, mirror_flip: bool = False) -> Optional[FrameResult]:
+    def process_next_frame(self, mirror_flip: bool = False):
         """
         【核心接口】读取并处理下一帧，返回包含所有信息的字典。
 
